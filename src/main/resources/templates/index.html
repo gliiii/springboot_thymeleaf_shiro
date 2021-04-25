@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.thymeleaf.org/thymeleaf-extras-shiro">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -10,21 +11,21 @@
     <span shiro:principal></span>
 
     <span shiro:authenticated="">
-        认证通过展示的内容
+        认证通过展示的内容<br>
     </span>
 
     <span shiro:notAuthenticated="">
-        没有认证展示的内容
+        没有认证展示的内容<br>
     </span>
 
     <!--授权角色-->
     <span shiro:hasRole="admin">
-        this is admin
+        this is admin<br>
     </span>
 
     <!--授权资源-->
     <span shiro:hasPermission="user:*:01">
-        具有用户模块权限
+        具有用户模块权限<br>
     </span>
 
 </body>
