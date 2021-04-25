@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.glii.springboot_thymeleaf_shiro.dao.UserDAO">
+    <insert id="save"   parameterType="User" useGeneratedKeys="true" keyProperty="id">
+        insert into user values(#{id},#{password},#{username},#{account},#{perms},#{salt})
+    </insert>
+
+    <select id="findByUserName" parameterType="String" resultType="User">
+         select id,password,username,account,perms,salt from user where account = #{account}
+    </select>
+
+    <resultMap id="userMap" type="User">
+        <id column="uid" property="id"/>
+        <result column="account" property="account"/>
+        <!--角色信息-->
+        <collection property="roles" javaType="list" ofType="Role">
+            <id column="id" property="id"/>
+            <result column="rname" property="role"/>
+        </collection>
+    </resultMap>
+
+    <select id="findRolesByUserName" parameterType="String" resultMap="userMap">
+        SELECT
+            u.id uid,
+            u.account,
+            r.id,
+            r.role rname
+        FROM
+            USER u
+                LEFT JOIN user_role ur ON u.id = ur.user_id
+                LEFT JOIN role r ON ur.role_id = r.id
+        WHERE
+            u.account = #{account}
+    </select>
+
+    <select id="findPermsByRoleId" parameterType="String" resultType="Perms">
+        SELECT
+            p.id,p.permission,p.`desc`,r.role
+        FROM
+            role r
+                LEFT JOIN role_permission rp ON r.id = rp.role_id
+                LEFT JOIN permission p ON rp.permission_id = p.id
+        WHERE
+            r.id = #{id}
+
+    </select>
+
+</mapper>
